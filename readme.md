@@ -223,4 +223,99 @@ In this section of the lab, we’ll take a look around Azure Security Center and
 
 **13)** From the ‘Data Collection’ page, turn on the automatic provisioning of the monitoring agent and click save. This will allow Azure Security Center to automatically install the monitoring agent on the VMs in your subscription.
 
+# Lab 1: Securing Azure Storage <a name="storage"></a>
+
+As part of the migration, Contoso now have a number of files stored in Azure blob storage which are critical to their application. You can view these files by navigating to the storage account in your ‘Contoso-IaaS’ resource group. This storage account will be named ‘contosoiaas’ followed by a random string of numbers and letters (Azure storage accounts must be globally unique). Within the ‘Blobs’ section, you’ll find a container named ‘contoso’. Inside this container, there are several files, including documents, spreadsheets and images.
+
+Unfortunately, Contoso have not secured this storage account correctly. To demonstrate this, choose one of the files (e.g. contoso.docx) and click the ‘…’ on the right hand side. Select ‘Blob Properties’ and copy the URL – paste this directly into your browser. You’ll see that you are able to download this item directly – in other words, it is completely open to the Internet.
+
+In this lab, you’ll fix this by locking down the storage account and using Shared Access Signatures to grant access only when needed. We’ll also enable logging for the storage account to gain visibility into the requests being made.
+
+## 2.1: Enable Logging for the Storage Account <a name="storagelogging"></a>
+
+**1)** In the Azure portal, navigate to the storage account within the ‘Contoso-IaaS’ resource group. Click on ‘Diagnostics’ on the menu.
+
+**2)** Under ‘Logging’ select ‘Read’, ‘Write’, ‘Delete’ and ‘Delete Data’. Click ‘Save’.
+
+**3)** Storage account logs will be sent to a container called ‘$logs’. This container is not viewable from the Azure portal, so to view it, you’ll need to download Azure Storage Explorer. You can download this app from here.
+
+**4)** Download and run the installer for Storage Explorer – once installed, run the program and log on using your account details.
+
+## 2.2: Remove Public Access to Blob Storage <a name="removeblobaccess"></a>
+
+**1)** To begin, click on the ‘Access Policies’ button at the top of the screen (assuming you are still in the ‘contoso’ container section.
+
+**2)** Note that the ‘Public Access Level’ is set to ‘Container’ – this means that anonymous access is available into this container.
+
+**3)** Change the access level to ‘Private’ and click to save.
+
+**4)** Browse to the same URL you copied earlier for one of your files (e.g. contoso.docx).
+
+**5)** This time, note that we are unable to download the file – public access has been removed.
+
+## 2.3: Implement Shared Access Signatures <a name="sas"></a>
+
+Now that we have removed public access, how do we give access to the users that require it? There are two ways in which to do that. The first option is to give users the access key to the storage account (you’ll find this in the ‘Access Keys’ item in the storage account menu). However, this comes with a downside – that key will give permanent, unlimited access into the storage account until the key is revoked.
+
+It would be better if we could grant users only the access they required, for a limited amount of time. To do this, we use Shared Access Signatures. Follow these steps to set up a SAS and Stored Access Policy.
+
+**1)** We’ll use Powershell to create our SAS and Stored Access Policy. These commands can be pasted in to the Azure portal Cloud Shell (in Powershell mode). Let’s step through the commands to achieve this.
+
+First, we’ll create a few variables relating to the storage account, container, resource group and the name of our policy. Note that you will need to replace the storage account name in the storageAccount variable with your own storage account name.
+
+<pre lang="...">
+$storageAccount = 'contosoiaas<unique string>'
+$container = 'contoso'
+$rg = 'Contoso-IaaS'
+$policyName = 'contosopolicy' 
+ </pre>
+
+Next, we’ll create our ‘storage context’, create a stored access policy and then store the SAS token in a variable called $sasToken:
+
+<pre lang="...">
+$accountKeys = Get-AzureRmStorageAccountKey -ResourceGroupName $rg -Name $storageAccount
+
+$storageContext = New-AzureStorageContext -StorageAccountName $storageAccount -StorageAccountKey $accountKeys[0].Value
+
+$storedPolicy = New-AzureStorageContainerStoredAccessPolicy -Container $container -Policy $policyName -Context $storageContext -StartTime $(Get-Date).ToUniversalTime().AddMinutes(-5) -ExpiryTime $(Get-Date).ToUniversalTime().AddYears(10) -Permission rwld
+
+$sasToken = New-AzureStorageContainerSASToken -name $container -Policy $storedPolicy -Context $storageContext 
+ </pre>
+
+Now let’s create a new storage context using the SAS token we just created:
+
+<pre lang="...">
+$storageContext = New-AzureStorageContext -StorageAccountName $storageAccount -SasToken $sasToken
+</pre>
+
+Finally, we can attempt to list out the files that exist within our storage account / container:
+
+<pre lang="...">
+get-azurestorageblob -context $storageContext -Container $container
+</pre>
+
+You should see the files listed out, as shown in Figure 11.
+
+![Blob List](https://github.com/araffe/azure-security-lab/blob/master/Images/bloblist.jpg "Blob List")
+
+**Figure 11:** Storage Account Blob List
+
+**6)** We’ve seen that we can now access the items in our storage account using the Shared Access Signature and Stored Access Policy. But what happens if we need to revoke the access at some point? To do this, we can modify (or delete) the stored access policy. In the Azure portal, navigate to the ‘contoso’ container under your storage account. Click on ‘Access Policies’.
+
+**7)** Remove the policy and click ‘Save’.
+
+**8)** Use the ‘get-azurestorageblob’ Powershell command shown above to list the blobs in the storage account. This now fails as the stored access policy has been deleted.
+
+## 2.4: Inspect Logs <a name="storagelogs"></a>
+
+In this section, you’ll check the storage logs that you enabled in exercise 1 – it may take around 10-15 minutes for these logs to populate, so feel free to come back to this exercise.
+
+**1)** Using Storage Explorer, navigate to ‘Blob Containers’ under your storage account. You should see a ‘$logs’ container.
+
+**2)** Drill down through the directory structure – eventually should get to a file named ‘000000.log’ or ‘000001.log’. Download this file and open with your favourite text editor (e.g. Visual Studio Code).
+
+**3)** Inspect the log file – you should see references to ‘ListBlob’ and ‘SASSuccess’ (indicating that authentication was successful using a SAS token).
+
+
+
 
