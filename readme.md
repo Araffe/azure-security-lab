@@ -143,7 +143,7 @@ Finally, assign directory roles and licenses to the users that have been created
 
 **1)** In the Azure portal, navigate to Azure Active Directory > Users > All Users > Isaiah Langer > Directory Role > Global Administrator > Save.
 
-![Assign Role](https://github.com/araffe/azure-security-lab/blob/master/Images/assignrole.jpg "Assigin Role")
+![Assign Role](https://github.com/araffe/azure-security-lab/blob/master/Images/assignroles.jpg "Assign Role")
 
 **Figure 4:** Assign Global Admin Role
 
@@ -152,3 +152,75 @@ Finally, assign directory roles and licenses to the users that have been created
 **3)** Navigate to Azure Active Directory > Licenses > All Products > Enterprise Mobility + Security E5 > select all of the users > Assign
 
 **4)** Repeat the above process to assign Office 365 to the users Alex and Isaiah, your admin user should already be licensed as part of the trial sign up process.
+
+# Lab 1: Azure Security Center <a name="asc"></a>
+
+In this lab, we’ll use Azure Security Center (ASC) to view recommendations and implement security policy in the Contoso environment. ASC provides centralized security policy management, actionable recommendations, alerting and incident reporting for both Azure and on-premises environments (as well other cloud platforms).
+
+## 1.1: Enable Azure Security Center <a name="enableasc"></a>
+
+**1)** In the Azure portal, click on Security Center on the left hand menu.
+
+**2)** It may take a few minutes before Security Center is ready – resources will show as “refreshing” during this time. (Figure 5).
+
+![ASC Initial Screen](https://github.com/araffe/azure-security-lab/blob/master/Images/ascoverview.jpg "ASC Initial Screen")
+
+**Figure 5:** Initial Security Center Screen
+
+**3)** At the top of the Security Center main pane, you will see a message stating that “Your security experience may be limited”. Click this message and you will be taken to a new pane entitled “Enable advanced security for subscriptions”. Click on your subscription and you will be taken to a new screen, as shown in Figure 6.
+
+![ASC Pricing](https://github.com/araffe/azure-security-lab/blob/master/Images/ascoverview.jpg "ASC Pricing")
+
+**Figure 6:** Azure Security Center Pricing
+
+**4)** Select the “Standard” tier and then click “save”.
+
+You have just upgraded to the “Standard” tier of Azure Security Center. This tier provides additional functionality over the free tier, including advanced threat detection and adaptive security controls. More details on the Standard tier are available from https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing.
+
+## 1.2: Explore Azure Security Center <a name="exploreasc"></a>
+
+In this section of the lab, we’ll take a look around Azure Security Center and explore what it has to offer.
+
+**1)** In the Azure portal, click on Security Center on the left hand menu.
+
+**2)** The overview section of the Security Center shows an 'at-a-glance' view of any security recommendations, alerts and prevention items relating to compute, storage, networking and applications, as shown in Figure 7.
+
+![ASC Main](https://github.com/araffe/azure-security-lab/blob/master/Images/ascmain.jpg "ASC Main")
+
+**Figure 7:** Azure Security Center Main Screen
+
+**3)** Click on 'Recommendations' in the Security Center menu. You will see a list of recommendations relating to various areas of the environment - for example, the need to add Network Security Groups on subnets and VMs, or the recommendation to apply disk encryption to VMs.
+
+![ASC Recommendations](https://github.com/araffe/azure-security-lab/blob/master/Images/ascrecommendations.jpg "ASC Recommendations")
+
+**Figure 8:** Azure Security Center Recommendations
+
+**4)** Return to the main Security Center page and then click on Compute. This will take you to a compute specific recommendations page where we can begin to apply recommendations.
+
+**5)** Click on the ‘VMs and Computers’ tab where you will see a list of all VMs in your subscription and the issues that ASC has found.
+
+**6)** One of the common warnings is related to endpoint protection on virtual machines. Return to the ‘Overview’ tab and then click on the warning for ‘Endpoint Protection Issues’. This will take you to a screen showing how many VMs are not protected.
+
+![ASC Endpoint Protection](https://github.com/araffe/azure-security-lab/blob/master/Images/ascendpoint.jpg "ASC Endpoint Protection")
+
+**Figure 9:** Azure Security Center Endpoint Protection
+
+**7)** Click on the ‘Endpoint Protection Not Installed’ item and then select the eligible VMs (VM1 & VM2 in your case). Click the button ‘Install on 2 VMs’.
+
+**8)** Select ‘Microsoft Anti-Malware’ and then select all defaults before clicking ‘OK’ and letting the anti-malware software install on your VMs.
+
+**9)** Return to the ‘Overview’ page within the Compute section and click on ‘Add a vulnerability assessment solution’. Select all four virtual machines and then click ‘Install’. From here, you can install a 3rd party vulnerability assessment tool (Qualys) on your VMs. Do not proceed with the installation, but instead proceed to the next step.
+
+**10)** Return to the main ASC screen and then click on Networking. From here, you’ll be able to see that your VMs (VM1 – 4) are listed as ‘Internet Facing Endpoints’ but have no protection from either Network Security Groups or Next Generation Firewalls (Figure 10). You’ll add Network Security Groups to the environment later.
+
+![ASC Networking](https://github.com/araffe/azure-security-lab/blob/master/Images/ascnetworking.jpg "ASC Networking")
+
+**Figure 10:** Azure Security Center Networking Recommendations
+
+**11)** From the main ASC page, click on Security Policy on the left hand menu. Click on your subscription.
+
+**12)** From here, you can control the security policy recommendations (in the security policy section), set up email addresses for automated alerting and configure the pricing tier.
+
+**13)** From the ‘Data Collection’ page, turn on the automatic provisioning of the monitoring agent and click save. This will allow Azure Security Center to automatically install the monitoring agent on the VMs in your subscription.
+
+
