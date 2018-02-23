@@ -1,7 +1,9 @@
-#Securing Azure Infrastructure - Hands on Lab Guide
+# Securing Azure Infrastructure - Hands on Lab Guide
 
 **Authors:**
+
 Adam Raffe - Microsoft
+
 Tom Wilde - Microsoft
 
 February 2018
@@ -80,7 +82,7 @@ The Contoso security team have requested your help to secure the infrastructure 
 
 The environment deployed by Contoso is shown in figure 1.
 
-![Main Lab Image](https://github.com/araffe/vdc-security-lab/blob/master/images/Overview.jpg "Security Lab Environment")
+![Main Lab Image](https://github.com/araffe/azure-security-lab/blob/master/images/Overview.jpg "Security Lab Environment")
 
 **Figure 1:** Contoso Environment
 
@@ -105,7 +107,7 @@ Perform the following steps to initialise the lab environment:
 
 **2)** Fill in the details, complete the sign-up process and create an “admin” user, as shown in figure 2.
 
-![Office 365 Signup](https://github.com/araffe/vdc-security-lab/blob/master/images/O365-Signup.jpg "Office 365 Signup")
+![Office 365 Signup](https://github.com/araffe/azure-security-lab/blob/master/images/O365-Signup.jpg "Office 365 Signup")
 
 **Figure 2:** Office 365 Signup
 
@@ -117,7 +119,7 @@ Perform the following steps to initialise the lab environment:
 
 **6)** Make sure the Cloud Shell window is set to “Powershell” (not “Bash”) as shown in Figure 3.
 
-![Cloud Shell](https://github.com/araffe/vdc-security-lab/blob/master/images/cloudshell.jpg "Cloud Shell")
+![Cloud Shell](https://github.com/araffe/azure-security-lab/blob/master/images/cloudshell.jpg "Cloud Shell")
 
 **Figure 3:** Azure Cloud Shell - Powershell
 
@@ -143,7 +145,7 @@ Finally, assign directory roles and licenses to the users that have been created
 
 **1)** In the Azure portal, navigate to Azure Active Directory > Users > All Users > Isaiah Langer > Directory Role > Global Administrator > Save.
 
-![Assign Role](https://github.com/araffe/vdc-security-lab/blob/master/images/assignrole.jpg "Assigin Role")
+![Assign Role](https://github.com/araffe/azure-security-lab/blob/master/images/assignrole.jpg "Assigin Role")
 
 **Figure 4:** Assign Global Admin Role
 
