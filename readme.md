@@ -86,16 +86,18 @@ The environment deployed by Contoso is shown in figure 1.
 
 The migrated Contoso environment has the following issues:
 
-•	The storage account / container used has open, public access.
-•	There is no access control in place for the virtual network / subnet.
-•	Virtual Machines are not encrypted.
-•	No Role Based Access Control (RBAC) is in place to determine which users have access to which resources. Contoso would like only the minimum amount of access to be given to users, including time limited access.
-•	The Azure SQL Database has no firewall rules configured.
+- The storage account / container used has open, public access.
+
+- There is no access control in place for the virtual network / subnet.
+
+- Virtual Machines are not encrypted.
+
+- No Role Based Access Control (RBAC) is in place to determine which users have access to which resources. Contoso would like only the minimum amount of access to be given to users, including time limited access.
+
+- The Azure SQL Database has no firewall rules configured.
 
 
 # Initial Lab Setup <a name="setup"></a>
-
-**Important: The initial lab setup using ARM templates takes around 45 minutes - please initiate this process as soon as possible to avoid a delay in starting the lab.**
 
 *All usernames and passwords for virtual machines are set to labuser / M1crosoft123*
 
@@ -121,7 +123,7 @@ Perform the following steps to initialise the lab environment:
 
 **Figure 3:** Azure Cloud Shell - Powershell
 
-**7)** To create the users, copy the code below and paste into cloud shell:
+**7)** To create the users, copy the code below and paste into the Powershell Cloud Shell window:
 
 <pre lang="...">
 $script = Invoke-WebRequest https://raw.githubusercontent.com/Araffe/ARM-Templates/master/infra-security-lab/CreateUsers.ps1 -UseBasicParsing
@@ -479,6 +481,169 @@ In this exercise, we’ll enable auditing and threat detection for the Contoso S
 
 **7)** If you are able to log on to the database (i.e. if you have SQL Server Management Studio installed), you can do so (try a few failed attempts as well). After some time, you should see the audit log populated.
 
+# Lab 7: Privileged Identity Management <a name="pim"></a>
+
+With Azure Active Directory (AD) Privileged Identity Management (PIM), you can manage, control, and monitor access within your organization. Organisations want to minimise the number of people who have access to secure information or resources, as that reduces the chance of a malicious user gaining access, or an authorised user inadvertently impacting a sensitive resource.
+
+## 7.1: Enable and Configure PIM <a name="enablepim"></a>
+
+In this exercise we will enable PIM for the tenant and then change a user (Isaiah Langer) from a 24/7 Global Administrator to an eligible user where they must respond to an MFA challenge to become a Global Administrator for 4 hours. We'll also view the audit log for PIM.
+
+**1)** Log into Azure Portal as the ‘admin’ user.
+
+**2)** In the left navigation, click All Services >, type priv, then select Azure AD Privileged Identity Management, as shown in Figure 19.
+
+![Selecting PIM](https://github.com/araffe/azure-security-lab/blob/master/Images/selectpim.jpg "Selecting PIM")
+
+**Figure 19:** Selecting Privileged Identity Management
+
+**3)** Under MANAGE, click Azure AD Directory Roles.
+
+**4)** Click Verify my identity.
+
+**5)** Follow the prompts to set up and verify using Multi-Factor Authentication (MFA) using phone verification.
+
+**6)** On the Azure AD Directory Roles – Sign up PIM for Azure AD Directory Roles blade, click Sign Up, then click Yes, as shown in Figure 20.
 
 
+![PIM Signup](https://github.com/araffe/azure-security-lab/blob/master/Images/pimsignup.jpg "PIM Signup")
 
+**Figure 20:** Privileged Identity Management - Signing Up
+
+**7)** Click Admin view.
+
+**8)** Point to Notification and Directory Roles.
+
+**9)** Under Directory Roles, click the Global Administrator role.
+
+**10)** In the Global Administrator blade, click on a user to make eligible (do not choose the user you are logged in as)
+
+**11)** On the right, click Make Eligible, as shown in Figure 21.
+
+![PIM Eligibility](https://github.com/araffe/azure-security-lab/blob/master/Images/pimeligibility.jpg "PIM Eligibility")
+
+**Figure 21:** PIM User Eligibility
+
+**12)** In the main Azure AD directory roles page, Under MANAGE, click Settings.
+
+**13)** Click Roles, then click Global Administrator.
+
+**14)** Move the Maximum Activation duration slider to the left, to 4 hours.
+
+**15)** Set email Notifications to Enable, as shown in Figure 22.
+
+![PIM Role](https://github.com/araffe/azure-security-lab/blob/master/Images/pimrole.jpg "PIM Role")
+
+**Figure 22:** PIM - Role Settings
+
+**16)** Click Save.
+
+**17)** Verify this change, click Azure Active Directory >Users > All users > Isaiah Langer > Directory role, Isaiah is now a user and no longer a Global Administrator.
+
+## 7.2: Test PIM Access <a name="testpim"></a>
+
+**1)** In a separate browser browse to the following URL: https://outlook.office365.com/ to view Isaiah Langer’s email.
+
+**2)** Sign in as isaiah.langer@\<Tenant\>.onmicrosoft.com. The password is “Password123.”
+
+**3)** Open the email from Microsoft Azure AD Notification Service for Activating Global Administrator access, as shown in Figure 23.
+
+![PIM Notification](https://github.com/araffe/azure-security-lab/blob/master/Images/pimnotify.jpg "PIM Notification")
+
+**Figure 23:** PIM Notification Email
+
+**4)** Click on the Azure Portal link in the email.
+
+**5)** In the Azure Portal, click All Services > then search for priv and select Azure AD Privileged Identity Management.
+
+**6)** Click My roles.
+
+**7)** Click Global Administrator.
+
+**8)** Click Verify your identity before proceeding.
+
+**9)** Click Verify my identity.
+
+**10)** Respond to the phone verification.
+
+**11)** You will be returned to the Global Administrator Role Activation Details blade. If not, follow these steps:
+
+- In the left navigation, click All Services, and then select Azure AD Privileged Identity Management.
+
+- Click My roles.
+
+- Click Global Administrator.
+
+**12)** In the top navigation, click Activate.
+
+In the Reason for role activation text box, type User administration.
+
+**14)** Click OK.
+
+**15)** On the Global Administrator blade, look at the Expiration field - it will be +4 hours from activation time.
+
+**16)** Verify this change, click Azure Active Directory >Users and groups > All users > Isaiah Langer > Directory role, Isaiah is now a Global Administrator and no longer a user.
+
+**17)** In the left navigation, click All Services, and then select Azure AD Privileged Identity Management.
+
+**18)** Click on Azure AD Directory Roles.
+
+**19)** Under ACTIVITY, click Directory Roles Audit History.
+
+**20)** Note the business justification entered above (User administration), which is displayed in the Reasoning column.
+
+**21)** Close all browsers
+
+## 7.3: Assign Users and Roles to Resources <a name="assignroles"></a>
+
+In this exercise we will create new Azure resources and assign direct (permanent) permissions. 
+
+**1)** Sign into the Azure Portal as the admin user (admin@\<tenant\>.onmicrosoft.com)
+
+**2)** Navigate to the resource group ‘Contoso-PaaS’ and then select ‘Access Control (IAM)’.
+
+**3)** Add the user ‘Alex Wilber’ as a Contributor Add > choose Contributor > Alex Wilber.
+
+![Assigning Users](https://github.com/araffe/azure-security-lab/blob/master/Images/assignusers.jpg "Assigning Users")
+
+**Figure 24:** Assigning Users / Roles to Resources
+
+**4)** In a separate browser sign into the Azure Portal as alex.wilber@\<Tenant\>.onmicrosoft.com. The password is “Password123.”
+
+**5)** Click on Resource Groups – Note that Alex can only see the resources in the Contoso-PaaS resource group as he does not have permissions to the Contoso-IaaS resources.
+
+## 7.4: Managing Azure Resources <a name="managingresources"></a>
+
+As some of the new resources have varying business impact we will increase our security posture using PIM to convert from direct permissions to “Just in Time” access and assign direct permissions that have an expiry date.
+
+New permissions required for Alex Wilber:
+
+|  Resource | Business Impact  |  Access Type | Project Time  | PIM Task   |
+|---|---|---|---|---|
+|  All Contoso PaaS Resources | Medium  |  Intermittent full access | 1 month  | JIT contributor access for 1 month  |
+| Contoso Web App  | Low  |  Read only | 1 month  | Direct read access for 1 month  |
+| Contoso Web App Service plan  | High  | Rare full access apart from modifying permissions  | 2 months  | JIT contributor access for 1 month, requiring approval  |
+
+**All Contoso PaaS Resources**
+
+**1)** Let’s use PIM to make the necessary access changes to the sales resources by changing the access on the sales resource group itself as permissions will roll down to all the resources in it. As the admin user, click Privileged Identity Management > Azure resources (preview) > click Resource Filter > Resource Group > Contoso-PaaS
+
+**2)** By default, the Contributor role is set to not require MFA so we need to modify this. In MANAGE click Role Settings > Contributor > Edit > tick Require Multi-Factor Authentication on activation > Update. Notice once the role has been updated you can see it has been modified, when and by who. This is shown in Figure 25.
+
+![Role Settings](https://github.com/araffe/azure-security-lab/blob/master/Images/rolesettings.jpg "Role Settings")
+
+**Figure 25:** Role Settings
+
+**3)** In the Admin view click Contributor, you should see Alex Wilber with direct assignment. Click Alex > Change Settings. As Alex needs Just in Time access for 1 month, choose assignment type Just in Time > assignment start date Current day > assignment end date Current day + 1 month.
+
+![JIT User Settings](https://github.com/araffe/azure-security-lab/blob/master/Images/rolesettings.jpg "JIT User Settings")
+
+**Figure 26:** Just in Time User Settings
+
+**Contoso Web App Web Site**
+
+**1)** Let’s use PIM to make the necessary access changes to the marketing resource by changing the access specifically on the Contoso Web App Web Site. Click Privileged Identity Management > Azure resources (preview) > click Resource Filter > choose Resource > contosoapp<randomstring>.
+
+**2)** In MANAGE click Roles > Reader.
+
+**3)** Click Add User > select Alex Wilber > set the membership settings as followed, membership choose Direct > assignment start date Current day > assignment end date Current day + 1 month > type a justification for the change > Done
