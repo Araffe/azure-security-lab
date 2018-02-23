@@ -223,7 +223,7 @@ In this section of the lab, we’ll take a look around Azure Security Center and
 
 **13)** From the ‘Data Collection’ page, turn on the automatic provisioning of the monitoring agent and click save. This will allow Azure Security Center to automatically install the monitoring agent on the VMs in your subscription.
 
-# Lab 1: Securing Azure Storage <a name="storage"></a>
+# Lab 2: Securing Azure Storage <a name="storage"></a>
 
 As part of the migration, Contoso now have a number of files stored in Azure blob storage which are critical to their application. You can view these files by navigating to the storage account in your ‘Contoso-IaaS’ resource group. This storage account will be named ‘contosoiaas’ followed by a random string of numbers and letters (Azure storage accounts must be globally unique). Within the ‘Blobs’ section, you’ll find a container named ‘contoso’. Inside this container, there are several files, including documents, spreadsheets and images.
 
@@ -315,6 +315,169 @@ In this section, you’ll check the storage logs that you enabled in exercise 1 
 **2)** Drill down through the directory structure – eventually should get to a file named ‘000000.log’ or ‘000001.log’. Download this file and open with your favourite text editor (e.g. Visual Studio Code).
 
 **3)** Inspect the log file – you should see references to ‘ListBlob’ and ‘SASSuccess’ (indicating that authentication was successful using a SAS token).
+
+# Lab 3: Securing Azure Networking <a name="azurenetworking"></a>
+
+To support the migration, Contoso have configured a single virtual network and subnet in Azure. At the moment, the virtual machines and subnet are completely unprotected from a network point of view; there is no access list or firewall capability in place and the VMs are fully accessible on every port from the Internet.
+
+In this section, we are going to implement Network Security Groups (NSGs) to allow only TCP port 80 into our virtual machines – NSGs are a feature native to Azure that allows a user to lock down network access to a virtual machine or subnet from certain IP addresses and ports.
+
+**1)** In the Azure portal, navigate to the ‘Contoso-IaaS’ resource group. Click ‘Add’ and then search for ‘Network Security Group’ from the marketplace. Choose Network Security Group and then click ‘Create’.
+
+**2)** Name the NSG Contoso-NSG and make sure the correct resource group is selected.
+
+**3)** Once the NSG has been created, navigate to it in the portal.
+
+**4)** You should see a list of default rules that have been applied to the NSG, as shown in Figure 12. These rules allow access from other virtual networks, access to the Internet, as well as denying all other traffic.
+
+![Default NSG Rules](https://github.com/araffe/azure-security-lab/blob/master/Images/defaultnsgrules.jpg "Default NSG Rules")
+
+**Figure 12:** Default NSG Rules
+
+**5)** We need to add a rule allowing HTTP through the NSG. Click on ‘Inbound Security Rules’ on the menu, followed by ‘Add’.
+
+**6)** Fill in the details as follows:
+
+**Destination Port Ranges:** _80_
+**Name:** _Allow-HTTP_
+**Protocol:** _TCP_
+
+Leave all other values at their defaults. Your rule should look the same as shown in Figure 13. Click OK.
+
+![Contoso NSG Rule](https://github.com/araffe/azure-security-lab/blob/master/Images/httprule.jpg "Contoso NSG Rule")
+
+**Figure 13:** Contoso-NSG Rule
+
+**7)** The next step is to apply this rule to the environment. There are two methods for applying an NSG – directly to a virtual machine, or to the entire subnet. In this scenario, we’ll apply the NSG to our virtual machines individually – generally, it is recommended to apply an NSG to a subnet, however we are going to apply it to our VMs as the next lab requires this.
+
+**8)** Click on ‘Network Interfaces’ from the menu.
+
+**9)** Click ‘Associate’. Select ‘VM1-nic’ and click OK. Repeat the process for VM2-nic, VM3-nic and VM4-nic.
+
+**10)** Now that the NSG has been applied, let’s make sure we can still access our website. From the Azure portal, click on the ‘VM1-PIP’ resource within the ‘Contoso-IaaS’ resource group. Copy the IP address and then attempt to browse to it. You should still have access to the website.
+
+# Lab 4: Just in Time VM Access <a name="jit"></a>
+
+In the last lab, we applied an NSG to our single VM (VM1) to allow HTTP traffic in. Now, Contoso need to carry out some administration on their VMs, which means they need to RDP in to the Windows machines and SSH into the Linux VMs. However, Contoso have complained that they can’t reach any of their machines to administer them (although the website is still accessible). 
+
+To test this, from the Azure portal select the public IP address ‘VM3-pip’ and copy the IP address. Try and SSH into this Linux virtual machine (e.g. ssh labuser@\<ip address\>) from your local machine (using a terminal emulator such as Putty or Windows 10 Linux Subsystem. This fails because your NSG does not allow TCP port 22 (or port 3389 for the Windows machines). 
+
+We could simply add a rule to our NSG that allows these ports, however that would allow access on a permanent basis – it would be nice if we could open these ports up only when an administrator requires access. The ‘Just in Time Access’ feature of Azure Security Center (currently in preview) allows this functionality.
+
+## 4.1: Apply Just in Time Access <a name="applyjit"></a>
+
+**1)** In the Azure portal, navigate to Security Center from the left hand menu.
+
+**2)** Under ‘Advanced Cloud Defense’, select ‘Just in Time Access (Preview).
+
+**3)** In the main pane under ‘Virtual Machines’ click ‘Recommended’. This page displays a list of VMs that are recommended for JIT protection.
+
+**4)** You should see all four VMs listed here. Select them all and then click on ‘Enable JIT on 4 VMs’, as shown in Figure 14.
+
+![Apply JIT](https://github.com/araffe/azure-security-lab/blob/master/Images/applyjit.jpg "Apply JIT")
+
+**Figure 14:** Applying Just in Time Access
+
+**5)** The suggested ports are shown – port 22, 3389 are suggested, as well as ports 5985 and 5986 (used for Powershell remote). Click ‘Save’.
+
+## 4.2: Request Access to VMs <a name="requestjit"></a>
+
+Now that JIT access is configured, let’s say we want to gain access to one of our VMs. To do this, follow these steps:
+
+**1)** Go to the ‘configured’ tab under Just in Time Access.
+
+**2)** Select VM-3 and then click ‘Request’
+
+**3)** As this is a Linux VM, we only need SSH access, so toggle port 22 to ‘on’. Leave all other settings at their default value. Click on ‘Open ports’. This is shown in Figure 15.
+
+![Request JIT](https://github.com/araffe/azure-security-lab/blob/master/Images/applyjit.jpg "Request JIT")
+
+**Figure 15:** Requesting VM Access
+
+**4)** Try to SSH into VM-3 again (using the public IP address you obtained at the beginning of this lab). You may need to try this twice to allow time for the NSG to be modified, but it should succeed.
+
+**6)** Return to your ‘Contoso-IaaS’ resource group and click on the NSG you created earlier (Contoso-NSG). You should see a list of rules for the various ports – at the top, you should see an ‘allow’ rule for port 22, using your IP address as shown in Figure 16 (source IP address removed from image).
+
+![JIT Rules](https://github.com/araffe/azure-security-lab/blob/master/Images/jitrules.jpg "JIT Rules")
+
+**Figure 16:** Just in Time Access - NSG Rules
+
+# Lab 5: Encrypting Virtual Machines <a name="ade"></a>
+
+One of the recommendations from Azure Security Center is to enable disk encryption on your virtual machines. This is achieved using Azure Disk Encryption.
+
+In this lab, you’ll encrypt one of the Contoso virtual machines – the instructions on how to do this are listed in the following documentation page:
+
+https://docs.microsoft.com/en-us/azure/security-center/security-center-disk-encryption
+
+Rather than listing out all steps in this lab guide, please follow the steps on the documentation page to encrypt VM1 in the ‘Contoso-IaaS’ resource group.
+Note that during the running of the prerequisites script, you’ll need to supply some information – you can use the following parameters for this:
+
+**Resource Group:** _Contoso-IaaS_
+**Key Vault Name:** _Use a globally unique name for this resource._
+**Location:** _westus2_
+**Subscription ID:** _You can obtain this from the portal by going to ‘All Services’ and then ‘Subscriptions’._
+**Azure AD App Name:** _Contosoade_
+
+Note that the _Set-AzureRmVMDiskEncryptionExtension_ command provided in the document may not work correctly – instead use the following command after running the prerequisites script to enable disk encryption:
+
+Set the ‘vmName’ variable:
+
+<pre lang="...">
+$vmName = “vm1”
+</pre>
+
+Enable encryption on the VM:
+
+<pre lang="...">
+Set-AzureRmVMDiskEncryptionExtension -ResourceGroupName $resourceGroupName -VMName $vmName -AadClientID $aadClientID.guid -AadClientSecret $secureAadClientSecret -DiskEncryptionKeyVaultUrl $diskEncryptionKeyVaultUrl -DiskEncryptionKeyVaultId $keyVaultResourceId -VolumeType All
+</pre>
+
+# Lab 6: Securing Azure SQL <a name="sql"></a>
+
+In addition to IaaS components, Contoso make use of an Azure SQL Database. Azure SQL is a PaaS service, where Microsoft assume responsibility for the underlying infrastructure and offer SQL ‘as a service’. However, there are still some security considerations that Contoso would like your assistance with.
+
+In this lab, we’ll lock the SQL database down to allow only certain IP addresses, as well as enable additional auditing and logging.
+
+## 6.1: Enable SQL Database Firewall <a name="sqlfirewall"></a>
+
+**1)** In the Azure portal, navigate to the Contoso-PaaS resource group. Within this resource, navigate to the SQL server resource named ‘contososql<random-string>’.
+
+**2)** From the menu, select Firewall / Virtual Networks’.
+
+**3)** You’ll see that no firewall rules are currently configured, however you’ll also see a suggested ‘client IP’ address based on your IP, as shown in Figure 17.
+
+![SQL Firewall](https://github.com/araffe/azure-security-lab/blob/master/Images/sqlfirewall.jpg "SQL Firewall")
+
+**Figure 17:** Enabling SQL Database Firewall
+
+**4)** Click ‘Add Client IP’ at the top of the page and then save.
+
+**5)** If you have SQL Server Management installed on your PC, you may test access to the SQL database. To do this, obtain the full server name by returning the 'overview' page and copying the server name from here. Use this server name to connect to your SQL database server from SQL management studio. You should be able to connect as the firewall is configured with your IP address.
+
+## 6.2: Enable SQL Database Auditing and Threat Detection <a name="sqlaudit"></a>
+
+In this exercise, we’ll enable auditing and threat detection for the Contoso SQL database. Auditing tracks database events and writes them to an audit log in Azure storage (similar to the storage logs you configured earlier). Threat Detection provides security alerts for suspicious activities relating to the SQL database.
+
+**1)** In the Azure portal, navigate to the Contoso-PaaS resource group and then select the SQL database server resource named ‘contososql<random-string>’.
+
+**2)** Select ‘Auditing and Threat Detection’ from the menu.
+
+**3)** Change auditing to ‘On’ and select the storage account you used earlier (contosoiaas<random-string>). Change the retention to 2 days.
+
+**4)** Change threat detection to ‘On’ and make sure ‘threat detection types’ is set to ‘All’, as shown in Figure 18.
+
+![SQL Auditing](https://github.com/araffe/azure-security-lab/blob/master/Images/sqlauditing.jpg "SQL Auditing")
+
+**Figure 18:** SQL Database Auditing and Threat Detection Settings
+
+**5)** Fill in the email address details and click ‘Save’.
+
+**Note: It is possible to enable auditing at both the server and SQL database level, however it is recommended to enable server level auditing only as this will also apply at the database level. More guidelines are available here.**
+
+**6)** Navigate to the SQL database (‘ContosoDB’). Under the ‘Auditing and Threat Detection’ menu item, click on ‘View Audit Logs’.
+
+**7)** If you are able to log on to the database (i.e. if you have SQL Server Management Studio installed), you can do so (try a few failed attempts as well). After some time, you should see the audit log populated.
 
 
 
