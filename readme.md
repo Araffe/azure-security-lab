@@ -647,3 +647,23 @@ New permissions required for Alex Wilber:
 **2)** In MANAGE click Roles > Reader.
 
 **3)** Click Add User > select Alex Wilber > set the membership settings as followed, membership choose Direct > assignment start date Current day > assignment end date Current day + 1 month > type a justification for the change > Done
+
+# Decommission the Lab <a name="decommission"></a>
+
+To decommission the lab, simply remove both resource groups (Contoso-IaaS and Contoso-PaaS) using the Azure portal. All resources created for this lab will be removed.
+
+# Conclusion <a name="conclusion"></a>
+
+Well done, you made it to the end of the lab! Hopefully this guide has given you a good grounding in Azure security concepts. There's more we could have covered but space is limited! We hope you enjoyed running through the lab and that you learnt a few useful things from it. Don't forget to delete your resources after you have finished!
+
+# Useful References <a name="ref"></a>
+
+- **Introduction to Azure Security:** https://docs.microsoft.com/en-us/azure/security/azure-security
+
+- **Microsoft Trust Center:** https://www.microsoft.com/en-us/trustcenter/security/azure-security
+
+- **Azure Security and Compliance:** https://azure.microsoft.com/en-gb/services/security-compliance/
+
+- **Azure AD Documentation:** https://docs.microsoft.com/en-gb/azure/active-directory/
+
+- **Azure Security Center Documentation:** https://docs.microsoft.com/en-gb/azure/security-center/
