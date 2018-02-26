@@ -544,7 +544,7 @@ In this exercise we will enable PIM for the tenant and then change a user (Isaia
 
 **1)** In a separate browser browse to the following URL: https://outlook.office365.com/ to view Isaiah Langer’s email.
 
-**2)** Sign in as isaiah.langer@\<Tenant\>.onmicrosoft.com. The password is “Password123.”
+**2)** Sign in as isaiah.langer@\<Tenant\>.onmicrosoft.com. The password is “M1crosoft123”
 
 **3)** Open the email from Microsoft Azure AD Notification Service for Activating Global Administrator access, as shown in Figure 23.
 
@@ -608,7 +608,7 @@ In this exercise we will create new Azure resources and assign direct (permanent
 
 **Figure 24:** Assigning Users / Roles to Resources
 
-**4)** In a separate browser sign into the Azure Portal as alex.wilber@\<Tenant\>.onmicrosoft.com. The password is “Password123.”
+**4)** In a separate browser sign into the Azure Portal as alex.wilber@\<Tenant\>.onmicrosoft.com. The password is “M1crosoft123”
 
 **5)** Click on Resource Groups – Note that Alex can only see the resources in the Contoso-PaaS resource group as he does not have permissions to the Contoso-IaaS resources.
 
