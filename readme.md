@@ -171,7 +171,7 @@ In this lab, we’ll use Azure Security Center (ASC) to view recommendations and
 
 **3)** At the top of the Security Center main pane, you will see a message stating that “Your security experience may be limited”. Click this message and you will be taken to a new pane entitled “Enable advanced security for subscriptions”. Click on your subscription and you will be taken to a new screen, as shown in Figure 6.
 
-![ASC Pricing](https://github.com/araffe/azure-security-lab/blob/master/Images/ascoverview.jpg "ASC Pricing")
+![ASC Pricing](https://github.com/araffe/azure-security-lab/blob/master/Images/ascpricing.jpg "ASC Pricing")
 
 **Figure 6:** Azure Security Center Pricing
 
@@ -201,7 +201,7 @@ In this section of the lab, we’ll take a look around Azure Security Center and
 
 **5)** Click on the ‘VMs and Computers’ tab where you will see a list of all VMs in your subscription and the issues that ASC has found.
 
-**6)** One of the common warnings is related to endpoint protection on virtual machines. Return to the ‘Overview’ tab and then click on the warning for ‘Endpoint Protection Issues’. This will take you to a screen showing how many VMs are not protected.
+**6)** One of the common warnings is related to endpoint protection on virtual machines. Click on the 'Compute' item in the menu and then click on the warning for ‘Endpoint Protection Issues’. This will take you to a screen showing how many VMs are not protected.
 
 ![ASC Endpoint Protection](https://github.com/araffe/azure-security-lab/blob/master/Images/ascendpoint.jpg "ASC Endpoint Protection")
 
@@ -235,11 +235,11 @@ In this lab, you’ll fix this by locking down the storage account and using Sha
 
 ## 2.1: Enable Logging for the Storage Account <a name="storagelogging"></a>
 
-**1)** In the Azure portal, navigate to the storage account within the ‘Contoso-IaaS’ resource group. Click on ‘Diagnostics’ on the menu.
+**1)** In the Azure portal, navigate to the storage account within the ‘Contoso-IaaS’ resource group. Click on ‘Diagnostics’ on the menu (under 'Monitoring').
 
 **2)** Under ‘Logging’ select ‘Read’, ‘Write’, ‘Delete’ and ‘Delete Data’. Click ‘Save’.
 
-**3)** Storage account logs will be sent to a container called ‘$logs’. This container is not viewable from the Azure portal, so to view it, you’ll need to download Azure Storage Explorer. You can download this app from here.
+**3)** Storage account logs will be sent to a container called ‘$logs’. This container is not viewable from the Azure portal, so to view it, you’ll need to download Azure Storage Explorer. You can download this app from https://azure.microsoft.com/en-us/features/storage-explorer/.
 
 **4)** Download and run the installer for Storage Explorer – once installed, run the program and log on using your account details.
 
@@ -272,7 +272,7 @@ $rg = 'Contoso-IaaS'
 $policyName = 'contosopolicy' 
  </pre>
 
-Next, we’ll create our ‘storage context’, create a stored access policy and then store the SAS token in a variable called $sasToken:
+Next, we’ll create our ‘storage context’, create a stored access policy and then store the SAS token in a variable called $sasToken. A storage context is simply an object within Powershell that contains details such as the storage account name and the key that gives access to that account.
 
 <pre lang="...">
 $accountKeys = Get-AzureRmStorageAccountKey -ResourceGroupName $rg -Name $storageAccount
