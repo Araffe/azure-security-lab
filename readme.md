@@ -475,7 +475,7 @@ In this exercise, we’ll enable auditing and threat detection for the Contoso S
 
 **5)** Fill in the email address details and click ‘Save’.
 
-**Note: It is possible to enable auditing at both the server and SQL database level, however it is recommended to enable server level auditing only as this will also apply at the database level. More guidelines are available here.**
+**Note: It is possible to enable auditing at both the server and SQL database level, however it is recommended to enable server level auditing only as this will also apply to all databases. More guidelines are available at https://docs.microsoft.com/en-us/azure/sql-database/sql-database-auditing.**
 
 **6)** Navigate to the SQL database (‘ContosoDB’). Under the ‘Auditing and Threat Detection’ menu item, click on ‘View Audit Logs’.
 
