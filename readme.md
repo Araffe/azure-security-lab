@@ -66,7 +66,7 @@ Tom Wilde - Microsoft
 
 To complete this workshop, the following will be required:
 
-- A valid subscription to Azure. If you don't currently have a subscription, consider setting up a free trial. If this workshop is being run by a Microsoft employee, Azure passes should be provided.
+- A valid subscription to Azure. If you don't currently have a subscription, consider setting up a free trial. If this workshop is being hosted by a Microsoft Cloud Solution Architect, Azure passes should be provided.
 
 - Multiple browser windows will be required to log in as different users simultaneously.
 
@@ -105,7 +105,7 @@ Perform the following steps to initialise the lab environment:
 
 **1)** As we need an Azure subscription licensed for Office 365 and EM+S, the best process for this is to first create an Office 365 trial account by navigating here: http://go.microsoft.com/fwlink/p/?LinkID=698279&culture=en-GB&country=GB
 
-**2)** Fill in the details, complete the sign-up process and create an “admin” user, as shown in figure 2.
+**2)** Fill in the details, complete the sign-up process and create an “admin” user, as shown in figure 2. **Please ensure the user is "admin" as shown below.**
 
 ![Office 365 Signup](https://github.com/araffe/azure-security-lab/blob/master/Images/O365-Signup.jpg "Office 365 Signup")
 
@@ -143,21 +143,19 @@ The lab environment will deploy using an Azure ARM template – this will take a
 
 Finally, assign directory roles and licenses to the users that have been created.
 
-**1)** In the Azure portal, navigate to Azure Active Directory > Users > All Users > Isaiah Langer > Directory Role > Global Administrator > Save.
+**9)** In the Azure portal, navigate to Azure Active Directory > Users > All Users > Isaiah Langer > Directory Role > Global Administrator > Save.
 
 ![Assign Role](https://github.com/araffe/azure-security-lab/blob/master/Images/assignroles.jpg "Assign Role")
 
 **Figure 4:** Assign Global Admin Role
 
-**2)** Repeat this process for the user Isaiah Langer.
+**10)** Navigate to Azure Active Directory > Licenses > All Products > Enterprise Mobility + Security E5 > select all of the users > Assign
 
-**3)** Navigate to Azure Active Directory > Licenses > All Products > Enterprise Mobility + Security E5 > select all of the users > Assign
-
-**4)** Repeat the above process to assign Office 365 to the users Alex and Isaiah, your admin user should already be licensed as part of the trial sign up process.
+**11)** Repeat the above process to assign Office 365 to the users _Alex_ and _Isaiah_, your admin user should already be licensed as part of the trial sign up process.
 
 # Lab 1: Azure Security Center <a name="asc"></a>
 
-In this lab, we’ll use Azure Security Center (ASC) to view recommendations and implement security policy in the Contoso environment. ASC provides centralized security policy management, actionable recommendations, alerting and incident reporting for both Azure and on-premises environments (as well other cloud platforms).
+In this lab, we’ll use Azure Security Center (ASC) to view recommendations and implement security policies in the Contoso environment. ASC provides centralized security policy management, actionable recommendations, alerting and incident reporting for both Azure and on-premises environments (as well other cloud platforms).
 
 ## 1.1: Enable Azure Security Center <a name="enableasc"></a>
 
@@ -512,11 +510,11 @@ In this exercise we will enable PIM for the tenant and then change a user (Isaia
 
 **7)** Click Admin view.
 
-**8)** Point to Notification and Directory Roles.
+**8)** View "Notification and Directory Roles".
 
 **9)** Under Directory Roles, click the Global Administrator role.
 
-**10)** In the Global Administrator blade, click on a user to make eligible (do not choose the user you are logged in as)
+**10)** In the Global Administrator blade, click on "Isaiah Langer".
 
 **11)** On the right, click Make Eligible, as shown in Figure 21.
 
@@ -622,7 +620,7 @@ New permissions required for Alex Wilber:
 |---|---|---|---|---|
 |  All Contoso PaaS Resources | Medium  |  Intermittent full access | 1 month  | JIT contributor access for 1 month  |
 | Contoso Web App  | Low  |  Read only | 1 month  | Direct read access for 1 month  |
-| Contoso Web App Service plan  | High  | Rare full access apart from modifying permissions  | 2 months  | JIT contributor access for 1 month, requiring approval  |
+
 
 **All Contoso PaaS Resources**
 
