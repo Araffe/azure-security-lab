@@ -638,7 +638,7 @@ New permissions required for Alex Wilber:
 
 **3)** In the Admin view click Contributor, you should see Alex Wilber with direct assignment. Click Alex > Change Settings. As Alex needs Just in Time access for 1 month, choose assignment type Just in Time > assignment start date Current day > assignment end date Current day + 1 month.
 
-![JIT User Settings](https://github.com/araffe/azure-security-lab/blob/master/Images/rolesettings.jpg "JIT User Settings")
+![JIT User Settings](https://github.com/araffe/azure-security-lab/blob/master/Images/jitusersettings.jpg "JIT User Settings")
 
 **Figure 26:** Just in Time User Settings
 
