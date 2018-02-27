@@ -413,11 +413,15 @@ https://docs.microsoft.com/en-us/azure/security-center/security-center-disk-encr
 Rather than listing out all steps in this lab guide, please follow the steps on the documentation page to encrypt VM1 in the ‘Contoso-IaaS’ resource group.
 Note that during the running of the prerequisites script, you’ll need to supply some information – you can use the following parameters for this:
 
-**Resource Group:** _Contoso-IaaS_
-**Key Vault Name:** _Use a globally unique name for this resource._
-**Location:** _westus2_
-**Subscription ID:** _You can obtain this from the portal by going to ‘All Services’ and then ‘Subscriptions’._
-**Azure AD App Name:** _Contosoade_
+- **Resource Group:** _Contoso-IaaS_
+
+- **Key Vault Name:** _Use a globally unique name for this resource._
+
+- **Location:** _westus2_
+
+- **Subscription ID:** _You can obtain this from the portal by going to ‘All Services’ and then ‘Subscriptions’._
+
+- **Azure AD App Name:** _Contosoade_
 
 Note that the _Set-AzureRmVMDiskEncryptionExtension_ command provided in the document may not work correctly – instead use the following command after running the prerequisites script to enable disk encryption:
 
