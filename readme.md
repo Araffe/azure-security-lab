@@ -10,7 +10,7 @@ Tom Wilde - Microsoft
 
 **[Prerequisites](#prereqs)**
 
-**[VDC Lab Introduction](#intro)**
+**[Lab Introduction](#intro)**
 
 **[Initial Lab Setup](#setup)**
 
