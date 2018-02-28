@@ -1,6 +1,6 @@
 $PasswordProfile = New-Object -TypeName Microsoft.Open.AzureAD.Model.PasswordProfile
 $PasswordProfile.Password = "M1crosoft123"
-$PasswordProfile.ForceChangePasswordNextLogin = False
+$PasswordProfile.ForceChangePasswordNextLogin = "False"
 $tenant = (Get-AzureADTenantDetail).verifiedDomains.name
 # $UPN = "admin@" + $tenant
 # $currentuser = (get-azureaduser).userprincipalname.tostring()
