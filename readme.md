@@ -126,7 +126,7 @@ Perform the following steps to initialise the lab environment:
 **7)** To create the users, copy the code below and paste into the Powershell Cloud Shell window:
 
 <pre lang="...">
-$script = Invoke-WebRequest https://raw.githubusercontent.com/Araffe/ARM-Templates/master/infra-security-lab/CreateUsers.ps1 -UseBasicParsing
+$script = Invoke-WebRequest https://raw.githubusercontent.com/Araffe/azure-security-lab/master/CreateUsers.ps1 -UseBasicParsing
 
 Invoke-Expression $($script.Content)
  </pre>
@@ -134,7 +134,7 @@ Invoke-Expression $($script.Content)
 **8)** To deploy the lab infrastructure, enter the following commands into the Powershell Cloud Shell window:
 
 <pre lang="...">
-$script = Invoke-WebRequest https://raw.githubusercontent.com/Araffe/ARM-Templates/master/infra-security-lab/CreateLab.ps1 -UseBasicParsing
+$script = Invoke-WebRequest https://raw.githubusercontent.com/Araffe/azure-security-lab/master/CreateLab.ps1 -UseBasicParsing
 
 Invoke-Expression $($script.Content)
  </pre>
