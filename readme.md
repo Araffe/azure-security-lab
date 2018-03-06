@@ -650,6 +650,44 @@ New permissions required for Alex Wilber:
 
 **3)** Click Add User > select Alex Wilber > set the membership settings as followed, membership choose Direct > assignment start date Current day > assignment end date Current day + 1 month > type a justification for the change > Done
 
+# Lab 8 : Implementing Azure Resource Policies <a name="arp"></a>
+
+Azure resource policies are used to place restrictions on what actions can be taken at a subscription or resource group level. For example, a resource policy could specify that only certain VM sizes are allowed, or that encryption is required for storage accounts. In this section of the lab, we'll apply built-in resource policies to one of our resource groups to restrict what can and can't be done in our environment.
+
+**1)** In the Azure portal, navigate to the Contoso-PaaS resource group and then click on Policies in the menu.
+
+**2)** Click on the 'Policies' tab in the right hand pane to see a list of available built-in resource policies.
+
+**3)** Select the policy entitled 'Allowed Resource Types' and then click on 'JSON'. This shows you the JSON policy document - this simple example takes a list of resource types and prevents the ability to create them.
+
+![Azure Resource Policy Example](https://github.com/araffe/azure-security-lab/blob/master/Images/armpolicies1.jpg "Azure Resource Policy Example")
+
+**Figure 27:** Azure Resource Policy Example
+
+
+**4)** Switch back to the 'Assignments' tab in the right hand pane and click 'Add'.
+
+**5)** Use the following details to create the policy:
+
+Policy: Allowed Resource Types
+Allowed Resource Types: Select all 'Microsoft.Network' resources
+Display Name: Allow Network
+ID: Allow-Network
+
+**6)** Use the Azure Cloud Shell to attempt to create a virtual machine using the following commands:
+
+<pre lang="...">
+New-azurermvm -resourcegroupname "contoso-paas" -name "policy-test-VM"  -imagename "UbuntuLTS"
+ </pre>
+
+**7)** Type in a username and password for the new virtual machine
+
+**8)** The validation should fail with a message stating "The template deployment failed because of policy violation. Please see details for more information." Azure Resource Policy was successfully applied and blocked the new virtual machine creation.
+
+**9)** Return to the 'Policies' page and remove the 'Allow-Network' resource policy assignment.
+
+
+
 # Decommission the Lab <a name="decommission"></a>
 
 To decommission the lab, simply remove both resource groups (Contoso-IaaS and Contoso-PaaS) using the Azure portal. All resources created for this lab will be removed.
