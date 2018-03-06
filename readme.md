@@ -56,6 +56,8 @@ Tom Wilde - Microsoft
 
 - [7.4: Managing Azure Resources](#managingresources)
 
+**[Lab 8: Azure Resource Policies](#arp)**
+
 **[Decommission the lab](#decommission)**
 
 **[Conclusion](#conclusion)**
