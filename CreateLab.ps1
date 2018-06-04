@@ -5,7 +5,7 @@ $outputs = (new-azurermresourcegroupdeployment -Name infraSecLab -ResourceGroupN
 $DestStorageAccount = $outputs.storageAccountName.Value
 $SourceStorageAccount = "infraseclab"
 $destStorageKey = (Get-AzureRmStorageAccountKey -ResourceGroupName $rg -accountName $DestStorageAccount).value[0]
-$sasToken = "?sv=2017-04-17&ss=b&srt=sco&sp=rwdlac&se=2018-03-31T15:53:57Z&st=2018-02-13T08:53:57Z&spr=https&sig=OmRforZXFQOZQ7SEmmMLKq5ChJnXihPG8SJCS%2B3%2B76s%3D"
+$sasToken = "?sv=2017-04-17&sr=c&si=infraseclab&sig=ONnlr56sGeZt0Qekgs8NFHquG5gGZU2jaFRnKp4bdXM%3D"
 $SourceStorageContext = New-AzureStorageContext –StorageAccountName $SourceStorageAccount -SasToken $sasToken
 $DestStorageContext = New-AzureStorageContext –StorageAccountName $DestStorageAccount -StorageAccountKey $DestStorageKey
 $SourceStorageContainer = 'infraseclab'
