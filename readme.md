@@ -197,7 +197,7 @@ In this section of the lab, we’ll take a look around Azure Security Center and
 
 **Figure 8:** Azure Security Center Recommendations
 
-**4)** Return to the main Security Center page and then click on Compute. This will take you to a compute specific recommendations page where we can begin to apply recommendations.
+**4)** Click on 'Compute & Apps' in the left hand menu. This will take you to a compute specific recommendations page where we can begin to apply recommendations.
 
 **5)** Click on the ‘VMs and Computers’ tab where you will see a list of all VMs in your subscription and the issues that ASC has found.
 
@@ -235,7 +235,7 @@ In this lab, you’ll fix this by locking down the storage account and using Sha
 
 ## 2.1: Enable Logging for the Storage Account <a name="storagelogging"></a>
 
-**1)** In the Azure portal, navigate to the storage account within the ‘Contoso-IaaS’ resource group. Click on ‘Diagnostics’ on the menu (under 'Monitoring').
+**1)** In the Azure portal, navigate to the storage account within the ‘Contoso-IaaS’ resource group. Click on ‘Diagnostic Settings (Classic)’ on the menu (under 'Monitoring').
 
 **2)** Under ‘Logging’ select ‘Read’, ‘Write’, ‘Delete’ and ‘Delete Data’. Click ‘Save’.
 
@@ -467,21 +467,17 @@ In this exercise, we’ll enable auditing and threat detection for the Contoso S
 
 **1)** In the Azure portal, navigate to the Contoso-PaaS resource group and then select the SQL database server resource named ‘contososql<random-string>’.
 
-**2)** Select ‘Auditing and Threat Detection’ from the menu.
+**2)** Select ‘Auditing’ from the menu.
 
 **3)** Change auditing to ‘On’ and select the storage account you used earlier (contosoiaas<random-string>). Change the retention to 2 days.
 
-**4)** Change threat detection to ‘On’ and make sure ‘threat detection types’ is set to ‘All’, as shown in Figure 18.
+**4)** Select 'Advanced Threat Protection' from the menu.
 
-![SQL Auditing](https://github.com/araffe/azure-security-lab/blob/master/Images/sqlauditing.jpg "SQL Auditing")
-
-**Figure 18:** SQL Database Auditing and Threat Detection Settings
-
-**5)** Fill in the email address details and click ‘Save’.
+**5)** Click 'Enable Advanced Threat Protection on the Server'. 
 
 **Note: It is possible to enable auditing at both the server and SQL database level, however it is recommended to enable server level auditing only as this will also apply to all databases. More guidelines are available at https://docs.microsoft.com/en-us/azure/sql-database/sql-database-auditing.**
 
-**6)** Navigate to the SQL database (‘ContosoDB’). Under the ‘Auditing and Threat Detection’ menu item, click on ‘View Audit Logs’.
+**6)** Navigate to the SQL database (‘ContosoDB’). Under the ‘Auditing’ menu item, click on ‘View Audit Logs’.
 
 **7)** If you are able to log on to the database (i.e. if you have SQL Server Management Studio installed), you can do so (try a few failed attempts as well). After some time, you should see the audit log populated.
 
