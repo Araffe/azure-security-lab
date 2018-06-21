@@ -491,11 +491,11 @@ In this exercise we will enable PIM for the tenant and then change a user (Isaia
 
 **1)** Log into Azure Portal as the ‘admin’ user.
 
-**2)** In the left navigation, click All Services >, type priv, then select Azure AD Privileged Identity Management, as shown in Figure 19.
+**2)** In the left navigation, click All Services >, type priv, then select Azure AD Privileged Identity Management, as shown in Figure 18.
 
 ![Selecting PIM](https://github.com/araffe/azure-security-lab/blob/master/Images/selectpim.jpg "Selecting PIM")
 
-**Figure 19:** Selecting Privileged Identity Management
+**Figure 18:** Selecting Privileged Identity Management
 
 **3)** Under MANAGE, click Azure AD Directory Roles.
 
@@ -503,12 +503,12 @@ In this exercise we will enable PIM for the tenant and then change a user (Isaia
 
 **5)** Follow the prompts to set up and verify using Multi-Factor Authentication (MFA) using phone verification.
 
-**6)** On the Azure AD Directory Roles – Sign up PIM for Azure AD Directory Roles blade, click Sign Up, then click Yes, as shown in Figure 20.
+**6)** On the Azure AD Directory Roles – Sign up PIM for Azure AD Directory Roles blade, click Sign Up, then click Yes, as shown in Figure 19.
 
 
 ![PIM Signup](https://github.com/araffe/azure-security-lab/blob/master/Images/pimsignup.jpg "PIM Signup")
 
-**Figure 20:** Privileged Identity Management - Signing Up
+**Figure 19:** Privileged Identity Management - Signing Up
 
 **7)** Click Admin view.
 
@@ -518,11 +518,11 @@ In this exercise we will enable PIM for the tenant and then change a user (Isaia
 
 **10)** In the Global Administrator blade, click on "Isaiah Langer".
 
-**11)** On the right, click Make Eligible, as shown in Figure 21.
+**11)** On the right, click Make Eligible, as shown in Figure 20.
 
 ![PIM Eligibility](https://github.com/araffe/azure-security-lab/blob/master/Images/pimeligibility.jpg "PIM Eligibility")
 
-**Figure 21:** PIM User Eligibility
+**Figure 20:** PIM User Eligibility
 
 **12)** In the main Azure AD directory roles page, Under MANAGE, click Settings.
 
@@ -530,11 +530,11 @@ In this exercise we will enable PIM for the tenant and then change a user (Isaia
 
 **14)** Move the Maximum Activation duration slider to the left, to 4 hours.
 
-**15)** Set email Notifications to Enable, as shown in Figure 22.
+**15)** Set email Notifications to Enable, as shown in Figure 21.
 
 ![PIM Role](https://github.com/araffe/azure-security-lab/blob/master/Images/pimrole.jpg "PIM Role")
 
-**Figure 22:** PIM - Role Settings
+**Figure 21:** PIM - Role Settings
 
 **16)** Click Save.
 
@@ -546,11 +546,11 @@ In this exercise we will enable PIM for the tenant and then change a user (Isaia
 
 **2)** Sign in as isaiah.langer@\<Tenant\>.onmicrosoft.com. The password is “M1crosoft123”
 
-**3)** Open the email from Microsoft Azure AD Notification Service for Activating Global Administrator access, as shown in Figure 23.
+**3)** Open the email from Microsoft Azure AD Notification Service for Activating Global Administrator access, as shown in Figure 22.
 
 ![PIM Notification](https://github.com/araffe/azure-security-lab/blob/master/Images/pimnotify.jpg "PIM Notification")
 
-**Figure 23:** PIM Notification Email
+**Figure 22:** PIM Notification Email
 
 **4)** Click on the Azure Portal link in the email.
 
@@ -606,7 +606,7 @@ In this exercise we will create new Azure resources and assign direct (permanent
 
 ![Assigning Users](https://github.com/araffe/azure-security-lab/blob/master/Images/assignusers.jpg "Assigning Users")
 
-**Figure 24:** Assigning Users / Roles to Resources
+**Figure 23:** Assigning Users / Roles to Resources
 
 **4)** In a separate browser sign into the Azure Portal as alex.wilber@\<Tenant\>.onmicrosoft.com. The password is “M1crosoft123”
 
@@ -628,17 +628,17 @@ New permissions required for Alex Wilber:
 
 **1)** Let’s use PIM to make the necessary access changes to the sales resources by changing the access on the sales resource group itself as permissions will roll down to all the resources in it. As the admin user, click Privileged Identity Management > Azure resources (preview) > click Resource Filter > Resource Group > Contoso-PaaS
 
-**2)** By default, the Contributor role is set to not require MFA so we need to modify this. In MANAGE click Role Settings > Contributor > Edit > tick Require Multi-Factor Authentication on activation > Update. Notice once the role has been updated you can see it has been modified, when and by who. This is shown in Figure 25.
+**2)** By default, the Contributor role is set to not require MFA so we need to modify this. In MANAGE click Role Settings > Contributor > Edit > tick Require Multi-Factor Authentication on activation > Update. Notice once the role has been updated you can see it has been modified, when and by who. This is shown in Figure 24.
 
 ![Role Settings](https://github.com/araffe/azure-security-lab/blob/master/Images/rolesettings.jpg "Role Settings")
 
-**Figure 25:** Role Settings
+**Figure 24:** Role Settings
 
 **3)** In the Admin view click Contributor, you should see Alex Wilber with direct assignment. Click Alex > Change Settings. As Alex needs Just in Time access for 1 month, choose assignment type Just in Time > assignment start date Current day > assignment end date Current day + 1 month.
 
 ![JIT User Settings](https://github.com/araffe/azure-security-lab/blob/master/Images/jitusersettings.jpg "JIT User Settings")
 
-**Figure 26:** Just in Time User Settings
+**Figure 25:** Just in Time User Settings
 
 **Contoso Web App Web Site**
 
@@ -654,16 +654,16 @@ Azure resource policies are used to place restrictions on what actions can be ta
 
 **1)** In the Azure portal, navigate to the Contoso-PaaS resource group and then click on Policies in the menu.
 
-**2)** Click on the 'Policies' tab in the right hand pane to see a list of available built-in resource policies.
+**2)** Select *Definitions* and then *Policy Definitions* in the right hand pane.
 
-**3)** Select the policy entitled 'Allowed Resource Types' and then click on 'JSON'. This shows you the JSON policy document - this simple example takes a list of resource types and prevents the ability to create them.
+**3)** Scroll down to the policy entitled 'Allowed Resource Types', click the '...', select 'View Definition' and then click on 'JSON'. This shows you the JSON policy document - this simple example takes a list of resource types and prevents the ability to create them.
 
 ![Azure Resource Policy Example](https://github.com/araffe/azure-security-lab/blob/master/Images/armpolicies1.jpg "Azure Resource Policy Example")
 
-**Figure 27:** Azure Resource Policy Example
+**Figure 26:** Azure Resource Policy Example
 
 
-**4)** Switch back to the 'Assignments' tab in the right hand pane and click 'Add'.
+**4)** Click on 'Assignments' in the menu and then click 'Assign Policy'.
 
 **5)** Use the following details to create the policy:
 
